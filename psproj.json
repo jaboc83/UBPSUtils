@@ -1,0 +1,17 @@
+{
+	"projectName": "UnsignedBytes PowerShell Utilities",
+	"rootModule": "UnsignedBytes.PowerShellUtilities",
+	"uniqueId": "ae65874a-2360-4eb0-8d1c-64efadb5771b",
+	"companyName": "UnsignedBytes, LLC",
+	"version": "0.0.1",
+	"description": "A set of PowerShell helper utilities for PowerShell development",
+	"authors": [
+		"Jake Moening <jmoening@unsignedbytes.com>"
+	],
+	"dotNetVersion": "4.5",
+	"powerShellVersion": "4.0",
+	"src": "src",
+	"dist": "dist",
+	"tests": "tests"
+}
+
