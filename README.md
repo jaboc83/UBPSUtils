@@ -1,4 +1,3 @@
-# UBPSUtils
 ## UnsignedBytes PowerShell Utilities
 
 The UnsignedBytes PowerShell Utilities provide a miscellaneous set of helper
