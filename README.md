@@ -38,4 +38,6 @@ Get-Help about_UnsignedBytes.PowerShellUtilities
 Use Get-Help to view the help file for any specific Comdlet.
 
 * Export-ZipFile - Unzips a zip file
+* New-FolderIfNotExists - Add the folder if it doesn't exist
+* Remove-ItemIfExists - Remove the file/folder if it exists.
 
