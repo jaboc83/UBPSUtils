@@ -68,8 +68,86 @@ Function Export-ZipFile
 	}
 
 }
+
+Function Remove-ItemIfExists {
+	<#
+	.SYNOPSIS
+		Remove a file / folder if it exists
+	.DESCRIPTION
+		Removes the specified file / folder if it exists, otherwise it does
+		nothing.
+	.PARAMETER $Paths
+		File / folder path(s) to remove
+	.EXAMPLE
+		Remove-ItemIfExists -Item ./test.txt
+		Remove a file
+	.EXAMPLE
+		Remove-ItemIfExists -Item ./bin,./obj
+		Remove a set of directories
+	.EXAMPLE
+		Get-ChildItem *.log | Remove-ItemIfExists
+		Remove all the log files in the current directory
+	#>
+	[CmdletBinding()]
+	param (
+		[Parameter(
+			Mandatory=$True,
+			Position=0,
+			ValueFromPipeline=$True,
+			ValueFromPipelineByPropertyName=$True
+		)]
+			[string[]]$Paths
+	)
+	PROCESS {
+
+		# Check all paths passed in
+		ForEach ($path in $Paths) {
+			If (Test-Path $path) {
+				Remove-Item (Resolve-Path ($path)) -Recurse -Force
+			}
+		}
+	}
+}
+
+Function New-FolderIfNotExists {
+	<#
+	.SYNOPSIS
+		Create a folder if it doesn't exist yet
+	.DESCRIPTION
+		This function will check if the specified folder
+		exists and if it doesn't it will create the folder
+	.PARAMETER $Paths
+		The path to the folder to be created
+	.EXAMPLE
+		New-FolderIfNotExists ./TestFolder/
+		Add a folder
+	.EXAMPLE
+		New-FolderIfNotExists ./TestFolderA/,./TestFolderB/
+		Add a collection of folders
+	#>
+	[CmdletBinding()]
+	param (
+		[Parameter(
+			Mandatory=$True,
+			Position=0,
+			ValueFromPipeline=$True,
+			ValueFromPipelineByPropertyName=$True
+		)]
+			[string[]]$Paths
+	)
+	PROCESS {
+		ForEach ($path in $Paths) {
+			If (-not (Test-Path $path)) {
+				New-Item -Type Directory $path
+			}
+		}
+	}
+}
+
 #endregion
 
 #region Module Exports
-Export-ModuleMember Export-ZipFile
+Export-ModuleMember -Function Export-ZipFile
+Export-ModuleMember -Function Remove-ItemIfExists
+Export-ModuleMember -Function New-FolderIfNotExists
 #endregion
