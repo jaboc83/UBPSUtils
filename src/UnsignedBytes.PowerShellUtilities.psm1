@@ -21,8 +21,7 @@ Function Export-ZipFile
 		Export-ZipFile -FilePath ./archive.zip -Destination ./DestinationDir/ -ContainingFolder -MyStuff
 		Unzip a file's contents into the folder ./DestinationDir/MyStuff/
 	#>
-	[CmdletBinding( SupportsShouldProcess=$True, ConfirmImpact='Medium')]
-	[OutputType([void])]
+	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
 	param (
 		[Parameter(
 			Mandatory=$True,
@@ -48,13 +47,13 @@ Function Export-ZipFile
 			Write-Verbose "Unzipping using a containing folder"
 			$containingFolderPath = (Join-Path $Destination $ContainingFolder)
 			If ((Test-Path $containingFolderPath) -eq $False) {
-				If ($pscmdlet.ShouldProcess("$containingFolderPath", 'Create Directory')) {
-					New-Item -Type Directory $containingFolderPath | Out-Null
-				}
+				New-Item -Type Directory $containingFolderPath -WhatIf:([bool]$WhatIfPreference.IsPresent) | Out-Null
 			}
 			$finalDestination = $containingFolderPath
 		}
-        $finalDestination = ((Resolve-Path $finalDestination) | Select -ExpandProperty Path)
+		if ($pscmdlet.ShouldProcess($finalDestination, "Validating destination exists")) {
+			$finalDestination = ((Resolve-Path $finalDestination) | Select -ExpandProperty Path)
+		}
 	}
 	PROCESS {
 		$zip = $shell.NameSpace(((Resolve-Path $FilePath) | Select -ExpandProperty Path))
@@ -92,7 +91,7 @@ Function Remove-ItemIfExists {
 		Get-ChildItem *.log | Remove-ItemIfExists
 		Remove all the log files in the current directory
 	#>
-	[CmdletBinding( SupportsShouldProcess=$True, ConfirmImpact='Medium')]
+	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
 	param (
 		[Parameter(
 			Mandatory=$True,
@@ -107,9 +106,7 @@ Function Remove-ItemIfExists {
 		# Check all paths passed in
 		ForEach ($path in $Paths) {
 			If (Test-Path $path) {
-				If ($pscmdlet.ShouldProcess($path, 'Remove Item')) {
-					Remove-Item (Resolve-Path ($path)) -Recurse -Force
-				}
+				Remove-Item (Resolve-Path ($path)) -Recurse -Force -WhatIf:([bool]$WhatIfPreference.IsPresent)
 			}
 		}
 	}
@@ -131,7 +128,7 @@ Function New-FolderIfNotExists {
 		New-FolderIfNotExists ./TestFolderA/,./TestFolderB/
 		Add a collection of folders
 	#>
-	[CmdletBinding( SupportsShouldProcess=$True, ConfirmImpact='Medium')]
+	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
 	param (
 		[Parameter(
 			Mandatory=$True,
@@ -144,9 +141,7 @@ Function New-FolderIfNotExists {
 	PROCESS {
 		ForEach ($path in $Paths) {
 			If (-not (Test-Path $path)) {
-				If ($pscmdlet.ShouldProcess($path, 'Remove-Folder')) {
-					New-Item -Type Directory $path
-				}
+				New-Item -Type Directory $path -WhatIf:([bool]$WhatIfPreference.IsPresent)
 			}
 		}
 	}
