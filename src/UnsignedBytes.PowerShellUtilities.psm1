@@ -21,7 +21,7 @@ Function Export-ZipFile
 		Export-ZipFile -FilePath ./archive.zip -Destination ./DestinationDir/ -ContainingFolder -MyStuff
 		Unzip a file's contents into the folder ./DestinationDir/MyStuff/
 	#>
-	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
+	[CmdletBinding(SupportsShouldProcess=$True)]
 	param (
 		[Parameter(
 			Mandatory=$True,
@@ -91,7 +91,7 @@ Function Remove-ItemIfExists {
 		Get-ChildItem *.log | Remove-ItemIfExists
 		Remove all the log files in the current directory
 	#>
-	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
+	[CmdletBinding(SupportsShouldProcess=$True)]
 	param (
 		[Parameter(
 			Mandatory=$True,
@@ -128,7 +128,7 @@ Function New-FolderIfNotExists {
 		New-FolderIfNotExists ./TestFolderA/,./TestFolderB/
 		Add a collection of folders
 	#>
-	[CmdletBinding(SupportsShouldProcess=$True, ConfirmImpact='Medium')]
+	[CmdletBinding(SupportsShouldProcess=$True)]
 	param (
 		[Parameter(
 			Mandatory=$True,
